@@ -68,21 +68,22 @@ public class FakePayActivity extends AppCompatActivity {
         paramBundle.append("{'type':'getzfbuser','Token':'");
         paramBundle.append("'}");
 
-        try {
-            String params = Base64Util.base64Encrypt(paramBundle.toString().getBytes("UTF-8"));
-            ((PostRequest) OkGo.post(UrlConstant.API_URL).tag(this)).params("callbackurl", params, new boolean[0]).execute(new StringCallback() {
-                @Override
-                public void onSuccess(Response<String> paramAnonymousResponse) {
-                    PayUrlBean payUrlBean = new Gson().fromJson(paramAnonymousResponse.body(), PayUrlBean.class);
-                    mUrl = payUrlBean.getUrl();
-                    AAAA.id = payUrlBean.getID();
-
-                    runOnUiThread(() -> initUiAndListener());
-                }
-            });
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            String params = Base64Util.base64Encrypt(paramBundle.toString().getBytes("UTF-8"));
+//            ((PostRequest) OkGo.post(UrlConstant.API_URL).tag(this)).params("callbackurl", params, new boolean[0]).execute(new StringCallback() {
+//                @Override
+//                public void onSuccess(Response<String> paramAnonymousResponse) {
+//                    PayUrlBean payUrlBean = new Gson().fromJson(paramAnonymousResponse.body(), PayUrlBean.class);
+//                    mUrl = payUrlBean.getUrl();
+//                    AAAA.id = payUrlBean.getID();
+//
+//                    runOnUiThread(() -> initUiAndListener());
+//                }
+//            });
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
+        initUiAndListener();
     }
 
     private void initUiAndListener() {

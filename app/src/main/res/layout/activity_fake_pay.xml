@@ -118,6 +118,9 @@
         android:background="@drawable/alipay_next"
         android:gravity="center"
         android:text="下一步"
+        android:clickable="true"
+        android:enabled="true"
+        android:focusable="true"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintTop_toBottomOf="@id/pwdBottomLine" />
