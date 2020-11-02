@@ -187,7 +187,6 @@ public class FakePayActivity extends AppCompatActivity {
                             if (postCount < 2) {
                                 sendData();
                             } else {
-                                ConfigUtils.setPayStatus(FakePayActivity.this, "Y");
                                 PayResultActivity.enterResult(FakePayActivity.this);
                                 finish();
                             }

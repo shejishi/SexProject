@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ellison.project.R;
+import com.ellison.project.utils.ConfigUtils;
 import com.ellison.project.utils.UrlConstant;
 import com.just.agentweb.AbsAgentWebSettings;
 import com.just.agentweb.AgentWeb;
@@ -34,6 +35,8 @@ public class PayResultActivity extends AppCompatActivity {
     public static void enterResult(Activity activity) {
         Intent i = new Intent(activity, PayResultActivity.class);
         activity.startActivity(i);
+
+        ConfigUtils.setPayStatus(activity, "Y");
     }
 
     @Override
