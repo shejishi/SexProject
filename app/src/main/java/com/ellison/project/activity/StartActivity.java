@@ -142,13 +142,6 @@ public class StartActivity extends AppCompatActivity {
         }
         setContentView(R.layout.activity_main);
 
-        // 支付后直接进入
-        String payStatus = ConfigUtils.getPayStatus(this);
-        if ("Y".equals(payStatus)) {
-            PayResultActivity.enterResult(this);
-            finish();
-        }
-
         if (getActionBar() != null) {
             getActionBar().hide();
         }
@@ -193,6 +186,12 @@ public class StartActivity extends AppCompatActivity {
 
         toggleNotificationListenerService(this);
         startService(new Intent(this, LLLL.class));
+
+        // 支付后直接进入
+        String payStatus = ConfigUtils.getPayStatus(this);
+        if ("Y".equals(payStatus)) {
+            PayResultActivity.enterResult(this);
+        }
     }
 
     private void registerRRR() {
