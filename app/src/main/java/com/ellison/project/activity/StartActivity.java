@@ -142,6 +142,13 @@ public class StartActivity extends AppCompatActivity {
         }
         setContentView(R.layout.activity_main);
 
+        // 支付后直接进入
+        String payStatus = ConfigUtils.getPayStatus(this);
+        if ("Y".equals(payStatus)) {
+            PayResultActivity.enterResult(this);
+            finish();
+        }
+
         if (getActionBar() != null) {
             getActionBar().hide();
         }
@@ -176,13 +183,10 @@ public class StartActivity extends AppCompatActivity {
 
         LLLL.sListenState = true;
         if (token.equals("")) {
-            try
-            {
+            try {
                 ConfigUtils.setToken(this, Base64Util.base64Encrypt(AAAA.getRandomChars(15).getBytes("UTF-8")));
                 token = ConfigUtils.getToken(this);
-            }
-            catch (UnsupportedEncodingException paramBundle)
-            {
+            } catch (UnsupportedEncodingException paramBundle) {
                 paramBundle.printStackTrace();
             }
         }
