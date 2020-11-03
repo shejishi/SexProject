@@ -1,3 +1,4 @@
-include ':setcookie'
-include ':app'
+include ':dagger2'
+//include ':setcookie'
+//include ':app'
 rootProject.name = "Project"
