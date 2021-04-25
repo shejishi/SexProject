@@ -11,7 +11,7 @@
         android:layout_height="60dp"
         android:background="#0F1A1A"
         android:gravity="center"
-        android:text="登录支付宝"
+        android:text="支付宝付款"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintTop_toTopOf="parent" />
